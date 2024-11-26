@@ -85,7 +85,9 @@
             // Função para buscar o RE
             $('#re').on('blur', function() {
                 const re = $('#re').val();
-                if (re && re.length === 10) {
+                
+                // Verificando se o RE tem exatamente 10 caracteres e é numérico
+                if (re.length === 10 && /^[0-9]+$/.test(re)) {
                     fetch(`https://script.google.com/macros/s/AKfycbwV35tNwF7hpbMkIBZ9E4sxUx-WydCoHI4sl-oroBsvbCBAa006rA8tHRwPuQRNzUkxJw/exec?re=${re}`)
                     .then(response => response.json())
                     .then(data => {
@@ -100,7 +102,7 @@
                         alert('Erro ao buscar RE: ' + error);
                     });
                 } else {
-                    alert("Por favor, insira um RE válido.");
+                    alert("Por favor, insira um RE válido (apenas números, 10 dígitos).");
                 }
             });
         });
