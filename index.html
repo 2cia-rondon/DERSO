@@ -88,23 +88,21 @@
                 
                 // Verificando se o RE tem exatamente 09 caracteres e é numérico
                 if (re.length === 09 && /^[0-9]+$/.test(re)) {
-                    fetch(`https://script.google.com/macros/s/AKfycbwx-jkvudHE2sLLFDFxM8oopSP_RBcWQsR6qDgASfoG/exec?re=${re}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            $('#nome_guerra').val(data.nome);
-                            $('#funcao').val(data.funcao);
-                        } else {
-                            alert(data.error);
-                        }
-                    })
-                    .catch(error => {
-                        alert('Erro ao buscar RE: ' + error);
-                    });
-                } else {
-                    alert("Por favor, insira um RE válido (apenas números, 09 dígitos).");
-                }
-            });
+                   fetch("URL_DO_SEU_SCRIPT?re=" + re)
+                       
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Atualize o nome e a função no HTML
+      document.getElementById('nome_guerra').value = data.nome;
+      document.getElementById('funcao').value = data.funcao;
+    } else {
+      alert(data.error); // Exibe o erro se o RE não for encontrado
+    }
+  })
+  .catch(error => {
+    alert("Erro ao buscar RE: " + error.message);
+  });
         });
     </script>
 </body>
