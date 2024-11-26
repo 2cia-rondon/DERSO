@@ -28,29 +28,24 @@
     </div>
 
     <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbwx-jkvudHE2sLLFDFxM8oopSP_RBcWQsR6qDgASfoG/dev";
+       const scriptURL = 'https://proxy-google-script.<sua-conta>.workers.dev';
 
-        document.getElementById('verificar').addEventListener('click', () => {
-            const reValue = document.getElementById('re').value.trim();
-
-            if (!/^1000\d{5}$/.test(reValue)) {
-                alert("Por favor, insira um RE no formato correto (1000XXXXX).");
-                return;
-            }
-
-            fetch(`${scriptURL}?re=${reValue}`, {
-                method: 'GET',
-                mode: 'no-cors' // Evita problemas de CORS
-            })
-            .then(response => {
-                // Como estamos no modo 'no-cors', não podemos acessar os dados diretamente.
-                console.log('Solicitação enviada, mas a resposta não pode ser lida devido ao modo no-cors.');
-                alert('Verificação do RE enviada. Confira no servidor.');
-            })
-            .catch(error => {
-                console.error('Erro ao buscar RE:', error);
-                alert('Erro ao buscar RE. Veja os detalhes no console.');
-            });
+async function fetchRE(re) {
+    try {
+        const response = await fetch(`${scriptURL}?re=${encodeURIComponent(re)}`);
+        if (!response.ok) {
+            throw new Error('Erro ao buscar RE');
+        }
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById('nome_guerra').value = data.nome;
+        } else {
+            alert(data.error);
+        }
+    } catch (error) {
+        console.error('Erro ao buscar RE:', error);
+    }
+}
         });
     </script>
 </body>
