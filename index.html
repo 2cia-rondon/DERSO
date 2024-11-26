@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Consulta</title>
+    <title>Formulário de Solicitação de Derso</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container mt-5">
-        <h2>Consulta de RE</h2>
-        <form id="consulta-form">
+        <h2>Formulário de Solicitação de Derso</h2>
+        <form id="formulario">
             <div class="form-group">
                 <label for="re">RE (Registro Estatístico):</label>
-                <input type="text" class="form-control" id="re" name="re" required>
-                <small class="form-text text-muted">Insira o RE no formato 1000*****.</small>
+                <input type="text" class="form-control" id="re" name="re" placeholder="1000XXXXX" required>
+                <small id="reHelp" class="form-text text-muted">O formato deve ser '1000XXXXX', com exatamente 8 caracteres.</small>
             </div>
             <div class="form-group">
                 <label for="nome">Nome de Guerra:</label>
@@ -23,45 +23,34 @@
                 <label for="funcao">Função:</label>
                 <input type="text" class="form-control" id="funcao" name="funcao" readonly>
             </div>
-            <button type="button" id="buscar-re" class="btn btn-primary">Buscar</button>
+            <button type="button" class="btn btn-primary" id="verificar">Verificar RE</button>
         </form>
     </div>
 
     <script>
-        document.getElementById('buscar-re').addEventListener('click', async () => {
-            const reInput = document.getElementById('re');
-            const reValue = reInput.value.trim();
-            const nomeInput = document.getElementById('nome');
-            const funcaoInput = document.getElementById('funcao');
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwx-jkvudHE2sLLFDFxM8oopSP_RBcWQsR6qDgASfoG/dev";
 
-            // Resetar os campos antes de buscar
-            nomeInput.value = '';
-            funcaoInput.value = '';
+        document.getElementById('verificar').addEventListener('click', () => {
+            const reValue = document.getElementById('re').value.trim();
 
             if (!/^1000\d{5}$/.test(reValue)) {
-                alert('O campo RE deve estar no formato 1000*****.');
+                alert("Por favor, insira um RE no formato correto (1000XXXXX).");
                 return;
             }
 
-            try {
-                const response = await fetch(`https://script.google.com/macros/s/AKfycbwx-jkvudHE2sLLFDFxM8oopSP_RBcWQsR6qDgASfoG/dev?re=${reValue}`);
-                
-                if (!response.ok) {
-                    throw new Error('Erro na requisição.');
-                }
-
-                const data = await response.json();
-
-                if (data.success) {
-                    nomeInput.value = data.nome;
-                    funcaoInput.value = data.funcao;
-                } else {
-                    alert(data.error || 'RE não encontrado.');
-                }
-            } catch (error) {
+            fetch(`${scriptURL}?re=${reValue}`, {
+                method: 'GET',
+                mode: 'no-cors' // Evita problemas de CORS
+            })
+            .then(response => {
+                // Como estamos no modo 'no-cors', não podemos acessar os dados diretamente.
+                console.log('Solicitação enviada, mas a resposta não pode ser lida devido ao modo no-cors.');
+                alert('Verificação do RE enviada. Confira no servidor.');
+            })
+            .catch(error => {
                 console.error('Erro ao buscar RE:', error);
-                alert('Erro ao buscar RE. Verifique a conexão e tente novamente.');
-            }
+                alert('Erro ao buscar RE. Veja os detalhes no console.');
+            });
         });
     </script>
 </body>
