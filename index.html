@@ -88,7 +88,7 @@
                 
                 // Verificando se o RE tem exatamente 09 caracteres e é numérico
                 if (re.length === 09 && /^[0-9]+$/.test(re)) {
-                    fetch(`https://script.google.com/macros/s/AKfycbwV35tNwF7hpbMkIBZ9E4sxUx-WydCoHI4sl-oroBsvbCBAa006rA8tHRwPuQRNzUkxJw/exec?re=${re}`)
+                    fetch(`https://script.google.com/macros/s/AKfycbwx-jkvudHE2sLLFDFxM8oopSP_RBcWQsR6qDgASfoG/exec?re=${re}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
