@@ -17,7 +17,7 @@
             <div class="form-group">
                 <label for="re">RE (Registro Estatístico):</label>
                 <input type="text" class="form-control" id="re" name="re" required>
-                <small id="reHelp" class="form-text text-muted">O formato deve ser '1000******', com exatamente 10 dígitos.</small>
+                <small id="reHelp" class="form-text text-muted">O RE deve começar com '1000' e ter mais 5 dígitos, totalizando 9 caracteres.</small>
             </div>
             <div class="form-group">
                 <label for="nome_guerra">Nome de Guerra:</label>
@@ -87,10 +87,10 @@
             // Função para buscar o RE e preencher os campos de Nome de Guerra e Função
             $('#re').on('blur', function() {
                 var re = $('#re').val().trim();
-                
-                // Verifica se o RE está vazio ou inválido
-                if (re === '') {
-                    alert('Por favor, insira um RE válido.');
+
+                // Verifica se o RE está vazio ou não corresponde ao formato esperado
+                if (re === '' || !/^1000\d{5}$/.test(re)) {
+                    alert('O RE deve começar com "1000" e ter 5 dígitos após isso, totalizando 9 caracteres.');
                     return;
                 }
 
